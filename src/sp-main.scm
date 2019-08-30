@@ -1,11 +1,13 @@
 (include "./optparse/niyarin_optparse.scm")
 (include "./sp-error.scm")
+(include "./sp-command.scm")
 
 (define-library (silver-paren main)
    (import (scheme base)
            (scheme write)
            (scheme process-context)
            (silver-paren error)
+           (silver-paren command)
            (niyarin optparse))
    (export silver-paren-main)
 
@@ -13,8 +15,8 @@
      (define *ARG-CONFIG*
        '(("--help" "-h" (help "Display a help message and exit."))
          ("--version" "-v" (help "Display Silver-paren's version and exit."))
-         ("command" (nargs 1) (default "none")
-         ("options" (nargs *)))))
+         ("command" (nargs 1) (default "none"))
+         ("options" (nargs *))))
 
      (define (internal-port-selector port-opt)
        (if (null? port-opt) (current-error-port) (car port-opt)))
@@ -46,7 +48,16 @@
             ((assoc "--help" parsed-option string=?) (internal-print-help))
             ((assoc "--version" parsed-option string=?) (internal-print-version))
             ((string=? command "none")
-             (internal-no-command-error))))))))
+             (internal-no-command-error))
+            (else 
+              (with-exception-handler
+                (lambda (ex)
+                  (silver-paren-error-mes 
+                    (error-object-message ex))
+                  (exit #f))
+                (lambda ()
+                  (silver-paren-command command parsed-option))))
+            ))))))
 
 (import 
   (silver-paren main))
