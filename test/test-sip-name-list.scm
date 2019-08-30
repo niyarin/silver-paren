@@ -1,4 +1,4 @@
-(include "../src/sp-name-list.scm")
+(include "../src/sip-name-list.scm")
 
 (define-library (test-silver-paren name-list)
    (export test-silver-paren-name-list)

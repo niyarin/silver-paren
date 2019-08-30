@@ -1,6 +1,6 @@
 (include "./optparse/niyarin_optparse.scm")
-(include "./sp-error.scm")
-(include "./sp-command.scm")
+(include "./sip-error.scm")
+(include "./sip-command.scm")
 
 (define-library (silver-paren main)
    (import (scheme base)
