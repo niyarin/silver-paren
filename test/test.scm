@@ -1,4 +1,4 @@
-(include "./test-sp-name-list.scm")
+(include "./test-sip-name-list.scm")
 
 (import 
   (scheme base)
