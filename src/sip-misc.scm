@@ -1,8 +1,9 @@
 (define-library (silver-paren misc)
    (import (scheme base)
+           (scheme write)
            (scheme case-lambda))
 
-   (export silver-paren-misc-assoc-cadr-with-default)
+   (export silver-paren-misc-assoc-cadr-with-default silver-paren-misc-object->string)
 
    (begin
       (define silver-paren-misc-assoc-cadr-with-default 
@@ -19,4 +20,9 @@
               alist
               default
               equal?))))
+
+      (define (silver-paren-misc-object->string obj)
+        (let ((output-string (open-output-string)))
+          (display obj output-string)
+          (get-output-string output-string)))
    ))

@@ -44,10 +44,8 @@
      (define silver-paren-features
        (case-lambda
          (()
-          (%generate-default-features))
-         ((sub-feature-name))))
+          (append 
+             (%generate-default-features)
+             (features)))
+         ((sub-feature-name) #f)))
      ))
-
-(import (silver-paren features) (scheme base) (scheme write))
-(display
-  (silver-paren-features))(newline)
