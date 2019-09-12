@@ -69,7 +69,7 @@
                     (error-object-message ex))
                   (exit #f))
                 (lambda ()
-                  (silver-paren-command command parsed-option))))
+                  (silver-paren-command command parsed-option config))))
             ))))))
 
 (import 
