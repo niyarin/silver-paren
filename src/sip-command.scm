@@ -18,10 +18,7 @@
   (export silver-paren-command)
    
   (begin
-
-
    (define (%run-install-command command opt config)
-
        (let ((target-packages (cond ((assoc "options" opt) => cdr) (else '())))
              (edition-delimiter
                (silver-paren-misc-assoc-cadr-with-default
@@ -33,10 +30,10 @@
                     target-packages
                     edition-delimiter
                     )))
-
            (when (null? package-name-list)
                (silver-paren-error "No package is selected."))
            (silver-paren-install package-name-list edition-delimiter))))
+
     (define (%run-feature-command command opt config)
       (let* ((options
                (silver-paren-misc-assoc-cadr-with-default
@@ -60,6 +57,5 @@
               (string-append 
                 "undefined command \""  
                 command
-                "\"")))
-      ))
+                "\"")))))
     ))
