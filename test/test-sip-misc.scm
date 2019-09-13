@@ -28,6 +28,25 @@
                 => 'default-value)
          )
 
+      (define (%silver-paren-misc-concatenate-path-test)
+         (check (silver-paren-misc-concatenate-path
+                  "aaa/bbb/ccc"
+                  "ddd.eeee")
+                => "aaa/bbb/ccc/ddd.eeee")
+
+         (check (silver-paren-misc-concatenate-path
+                  "aaa/bbb/ccc/"
+                  "ddd.eeee")
+                => "aaa/bbb/ccc/ddd.eeee")
+(check (silver-paren-misc-concatenate-path
+                  "aaa/bbb/ccc/"
+                  "ddd"
+                  "eee"
+                  "fff")
+                => "aaa/bbb/ccc/ddd/eee/fff")
+        )
+
       (define (test-silver-paren-misc)
          (%silver-paren-misc-assoc-cadr-with-default-test)
+         (%silver-paren-misc-concatenate-path-test)
         )))
