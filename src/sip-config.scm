@@ -48,7 +48,7 @@
                          ))))
          (fold
            fold-fun
-           '()
+           base-config
            option)))
 
       ))
