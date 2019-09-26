@@ -1,11 +1,18 @@
+(include  "sip-log.scm")
+
 (define-library (silver-paren misc)
    (import (scheme base)
            (scheme write)
            (scheme case-lambda)
+           (silver-paren log)
            (srfi 1);(scheme list)
            )
 
-   (export silver-paren-misc-assoc-cadr-with-default silver-paren-misc-object->string silver-paren-misc-concatenate-path)
+   (export silver-paren-misc-assoc-cadr-with-default 
+           silver-paren-misc-object->string 
+           silver-paren-misc-concatenate-path
+           silver-paren-misc-tail-element-in-path 
+           silver-paren-misc-create-dir)
 
    (begin
       (define silver-paren-misc-assoc-cadr-with-default 
@@ -40,4 +47,20 @@
           %concatenate-path2-rev 
           (%concatenate-path2-rev path2 path1)
           pathn))
+
+      (define (silver-paren-misc-tail-element-in-path url)
+         (let loop ((i 0)
+                    (res-index-start 0))
+           (cond
+             ((= i (string-length url)) 
+              (substring url res-index-start (string-length url)))
+             ((char=? i #\/)
+              (loop (+ i 1)  (+ i 1)))
+             (else
+               (loop (+ i 1) i)))))
+
+      (define (silver-paren-misc-create-dir dirname out-sourcing-flag)
+         (if out-sourcing-flag
+           (silver-paren-log-out-command (string-append "create-dir" ">" dirname))
+           (silver-paren-log-message "This program doesn't support creating directories.")))
         ))

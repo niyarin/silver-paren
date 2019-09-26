@@ -1,9 +1,11 @@
-(include "./sip-error.scm")
-(include "./sip-install.scm")
-(include "./sip-name-list.scm")
-(include "./sip-misc.scm")
-(include "./sip-features.scm")
-(include "./sip-log.scm")
+(include "./sip-error.scm" 
+         "./sip-install.scm" 
+         "./sip-name-list.scm" 
+         "./sip-misc.scm" 
+         "./sip-features.scm" 
+         "./sip-log.scm" 
+         "./sip-init.scm"
+         )
 
 (define-library (silver-paren command)
   (import 
@@ -14,7 +16,9 @@
     (silver-paren features)
     (silver-paren misc)
     (silver-paren log)
-    (silver-paren error))
+    (silver-paren error)
+    (silver-paren init)
+    )
   (export silver-paren-command)
    
   (begin
@@ -45,13 +49,18 @@
                 (silver-paren-features)
                 (silver-paren-features (car options)))))
         (silver-paren-display sip-features)))
-      
+     
+    (define (%run-init-command command opt config)
+       (silver-paren-init config))
+
     (define (silver-paren-command command opt config)
       (cond
         ((equal? command "install")
          (%run-install-command command opt config))
         ((equal? command "features")
           (%run-feature-command command opt config))
+        ((equal? command "init")
+         (%run-init-command command opt config))
         (else 
             (silver-paren-error 
               (string-append 

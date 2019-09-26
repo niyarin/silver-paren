@@ -18,11 +18,20 @@
        `(("--help" "-h" (help "Display a help message and exit."))
          ("--version" "-v" (help "Display Silver-paren's version and exit."))
          ("--network-outsourcing" (nargs 0))
+         ("--directory-outsourcing" 
+          (nargs 0)
+          (silver-paren-config-name directory-outsourceing)
+          (silver-paren-config-type ,(lambda x #t)))
          ("--edition-delimiter"  
              (help "Set edition delimiter.(default :edition)") 
              (nargs 1)
              (silver-paren-config-name edition-delimiter) 
              (silver-paren-config-type ,cadr))
+         ("implementation" 
+          (help "Set using implementation.") 
+          (nargs 1)
+          (silver-paren-config-name implementation)
+          (silver-paren-config-type ,cadr))
          ("command" (nargs 1) (default "none"))
          ("options" (nargs *))))
 
@@ -62,6 +71,7 @@
             ((assoc "--version" parsed-option string=?) (%print-version))
             ((string=? command "none")
              (%no-command-error))
+            (#t (silver-paren-command command parsed-option config));for debug
             (else 
               (with-exception-handler
                 (lambda (ex)

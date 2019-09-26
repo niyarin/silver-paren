@@ -7,6 +7,7 @@
    (begin
       (define INTERNAL-DEFAULT-CONFIG
         '((edition-delimiter ":edition")
+          (silver-paren-directory-path "~/.silver-paren")
           ))
 
       (define (silver-paren-default-config)
