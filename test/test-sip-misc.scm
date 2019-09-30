@@ -38,15 +38,29 @@
                   "aaa/bbb/ccc/"
                   "ddd.eeee")
                 => "aaa/bbb/ccc/ddd.eeee")
-(check (silver-paren-misc-concatenate-path
+         (check (silver-paren-misc-concatenate-path
                   "aaa/bbb/ccc/"
                   "ddd"
                   "eee"
                   "fff")
-                => "aaa/bbb/ccc/ddd/eee/fff")
-        )
+                => "aaa/bbb/ccc/ddd/eee/fff"))
+
+      (define (%silver-paren-misc-restart-begin-test)
+        (map
+          (lambda (check-res)
+            (check
+              (let ((tmp '()))
+                 (silver-paren-misc-restart-begin (car check-res)
+                     (a (set! tmp (cons 'a tmp)))
+                     (b (set! tmp (cons 'b tmp)))
+                     (c (set! tmp (cons 'c tmp)))
+                     (d (set! tmp (cons 'd tmp)))))
+              => (cadr check-res)))
+         '((a (d c b a)) (b (d c b)) (d (d)))))
 
       (define (test-silver-paren-misc)
          (%silver-paren-misc-assoc-cadr-with-default-test)
          (%silver-paren-misc-concatenate-path-test)
-        )))
+         (%silver-paren-misc-restart-begin-test)
+         )
+      ))

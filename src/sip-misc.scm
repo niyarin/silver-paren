@@ -15,6 +15,7 @@
            silver-paren-misc-tail-element-in-path 
            silver-paren-misc-create-dir
            silver-paren-misc-config-ref
+           silver-paren-misc-restart-begin
            )
 
    (begin
@@ -77,4 +78,30 @@
                 "Internal error.config "
                 name
                 " is not supported.")))))
+
+
+      (define-syntax %tail-all-cond
+         (syntax-rules ()
+           ((_ (test1 bodies1 ...) (test2 bodies2 ...) ...)
+            (if test1
+              (begin
+                bodies1 ...
+                (begin bodies2 ...) ...)
+              (%tail-all-cond
+                (test2 bodies2 ... ) ...)))
+           ((_)
+            #f)))
+
+      (define-syntax silver-paren-misc-restart-begin
+         (syntax-rules ()
+            ((_ target) (begein))
+            ((_ target (name1 body1 ...) (name2 body2 ...)  ...)
+               (%tail-all-cond
+                  ((or (eq? target (quote name1))
+                       (not target))
+                   body1 ... )
+                  ((eq? target (quote name2)) 
+                   body2 ...)
+                  ...
+             ))))
       ))
