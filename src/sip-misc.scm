@@ -1,4 +1,5 @@
 (include  "sip-log.scm")
+(include  "sip-error.scm")
 
 (define-library (silver-paren misc)
    (import (scheme base)
@@ -12,7 +13,9 @@
            silver-paren-misc-object->string 
            silver-paren-misc-concatenate-path
            silver-paren-misc-tail-element-in-path 
-           silver-paren-misc-create-dir)
+           silver-paren-misc-create-dir
+           silver-paren-misc-config-ref
+           )
 
    (begin
       (define silver-paren-misc-assoc-cadr-with-default 
@@ -63,4 +66,15 @@
          (if out-sourcing-flag
            (silver-paren-log-out-command (string-append "create-dir" ">" dirname))
            (silver-paren-log-message "This program doesn't support creating directories.")))
-        ))
+
+      (define (silver-paren-misc-config-ref name config)
+        (cond
+          ((assv name config)
+           => cadr)
+          (else
+            (silver-paren-error
+              (string-append
+                "Internal error.config "
+                name
+                " is not supported.")))))
+      ))
