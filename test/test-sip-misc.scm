@@ -50,13 +50,21 @@
           (lambda (check-res)
             (check
               (let ((tmp '()))
-                 (silver-paren-misc-restart-begin (car check-res)
+                 (silver-paren-misc-restart-begin 
+                   (car check-res)
                      (a (set! tmp (cons 'a tmp)))
                      (b (set! tmp (cons 'b tmp)))
                      (c (set! tmp (cons 'c tmp)))
                      (d (set! tmp (cons 'd tmp)))))
               => (cadr check-res)))
-         '((a (d c b a)) (b (d c b)) (d (d)))))
+         '((a (d c b a)) (b (d c b)) (d (d))))
+
+         (silver-paren-misc-restart-begin
+           'a
+           next-name-ref
+           (a (check (next-name-ref) => 'b))
+           (b (check (next-name-ref) => 'c))
+           (c (check (next-name-ref) => #f))))
 
       (define (test-silver-paren-misc)
          (%silver-paren-misc-assoc-cadr-with-default-test)

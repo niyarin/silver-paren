@@ -93,15 +93,39 @@
             #f)))
 
       (define-syntax silver-paren-misc-restart-begin
-         (syntax-rules ()
+         (syntax-rules () 
             ((_ target) (begein))
             ((_ target (name1 body1 ...) (name2 body2 ...)  ...)
+             (silver-paren-misc-restart-begin
+               target next-name-ref
+               (name1 body1 ...)
+               (name2 body2 ...) ...))
+            ((_ target next-name-ref (name1 body1 ...) (name2 body2 ...)  ...)
+             (let* ((name-list 
+                      (quote (name1 name2 ...)))
+                    (%next-name-ref 
+                        (lambda (name)
+                          (lambda ()
+                            (let ((p
+                                     (memq name name-list)))
+                              (cond
+                                ((not p))
+                                ((null? (cdr p))
+                                 #f)
+                                (else
+                                  (cadr p))))))))
+
                (%tail-all-cond
                   ((or (eq? target (quote name1))
                        (not target))
-                   body1 ... )
+
+                   (let ((next-name-ref
+                           (%next-name-ref 'name1)))
+                      body1 ... ))
                   ((eq? target (quote name2)) 
-                   body2 ...)
+                   (let ((next-name-ref
+                           (%next-name-ref 'name2)))
+                   body2 ...))
                   ...
-             ))))
+             )))))
       ))
