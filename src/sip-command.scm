@@ -59,6 +59,9 @@
          (%run-install-command command opt config))
         ((equal? command "features")
           (%run-feature-command command opt config))
+        ((equal? command "restart")
+
+         )
         ((equal? command "init")
          (%run-init-command command opt config))
         (else 

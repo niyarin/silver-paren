@@ -63,6 +63,11 @@
              (else
                (loop (+ i 1) i)))))
 
+      (define (silver-paren-misc-exit-with-restart-simple symbol)
+         (when out-sourcing-flag
+           (silver-paren-log-out-command (string-append "restart" ">" symbol))
+           (exit)))
+
       (define (silver-paren-misc-create-dir dirname out-sourcing-flag)
          (if out-sourcing-flag
            (silver-paren-log-out-command (string-append "create-dir" ">" dirname))
@@ -91,7 +96,7 @@
                 (test2 bodies2 ... ) ...)))
            ((_)
             #f)))
-
+   
       (define-syntax silver-paren-misc-restart-begin
          (syntax-rules () 
             ((_ target) (begein))

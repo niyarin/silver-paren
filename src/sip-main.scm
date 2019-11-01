@@ -20,7 +20,7 @@
          ("--network-outsourcing" (nargs 0))
          ("--directory-outsourcing" 
           (nargs 0)
-          (silver-paren-config-name directory-outsourceing)
+          (silver-paren-config-name silver-paren-directory-outsourcing)
           (silver-paren-config-type ,(lambda x #t)))
          ("--edition-delimiter"  
              (help "Set edition delimiter.(default :edition)") 

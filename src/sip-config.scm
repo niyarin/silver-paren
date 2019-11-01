@@ -8,6 +8,9 @@
       (define INTERNAL-DEFAULT-CONFIG
         '((edition-delimiter ":edition")
           (silver-paren-directory-path "~/.silver-paren")
+          (silver-paren-directory-outsourcing
+            #f
+            )
           ))
 
       (define (silver-paren-default-config)
