@@ -1,0 +1,36 @@
+#!/bin/sh
+
+SILVER_PAREN_PATH=../src #TODO: fix lator
+
+TARGET_SCHEME=$1
+OPT=${@:1}
+
+OUTSOURCING_OPT=--directory-outsourcing
+
+function do_command(){
+    expression=$1
+    cmd=`echo $expression|grep -oP "^.*?>"`
+    opt=`echo $expression|sed "s/^$cmd//g"`
+
+    if [ $cmd = "create-dir>" ]; then
+        target_dir=`eval "echo $opt"`
+        mkdir $target_dir
+    elif [ $cmd = "restart>" ]; then
+        echo "!"
+    fi
+}
+
+function read_loop(){
+
+    for output in `$TARGET_SCHEME $SILVER_PAREN_PATH/sip-main.scm $OPT $OUTSOURCING_OPT`
+    do
+        if  echo $output|grep "^Silver-paren-out-command:" >/dev/null  ; then
+          expression=`echo $output|sed "s/^Silver-paren-out-command://g"`;
+          do_command $expression
+        else
+            echo $output
+        fi
+    done
+}
+
+read_loop
