@@ -26,11 +26,10 @@
              (silver-paren-misc-restart-begin 
                restart-symbol
                (silver-paren-init:create-sip-dir
-                  (silver-paren-misc-create-dir
-                    target-dir
-                    outsourcing-flag)
-                  (silver-paren-misc-exit-with-restart-simple
-                    silver-paren-init:create-sip-current-imp-dir
+                  (silver-paren-misc/create-dir target-dir outsourcing-flag)
+                  (silver-paren-misc/exit-with-restart-simple
+                    'silver-paren-init:create-sip-current-imp-dir
+                    outsourcing-flag
                     ))))
             (else
               )
