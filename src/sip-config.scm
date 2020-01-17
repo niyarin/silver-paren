@@ -2,18 +2,16 @@
    (import (scheme base)
            (srfi 1));scheme list
 
-   (export silver-paren-default-config silver-paren-config-apply-command-line-option)
+   (export silver-paren-config/default-config silver-paren-config-apply-command-line-option)
 
    (begin
       (define INTERNAL-DEFAULT-CONFIG
         '((edition-delimiter ":edition")
           (silver-paren-directory-path "~/.silver-paren")
-          (silver-paren-directory-outsourcing
-            #f
-            )
-          ))
+          (silver-paren-directory-outsourcing #f)
+          (silver-paren-restart-symbol _)))
 
-      (define (silver-paren-default-config)
+      (define (silver-paren-config/default-config)
         (list-copy INTERNAL-DEFAULT-CONFIG))
 
       (define (silver-paren-config-apply-command-line-option base-config arg-config option)

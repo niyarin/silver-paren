@@ -5,6 +5,7 @@
    (import (scheme base)
            (scheme write)
            (scheme case-lambda)
+           (scheme process-context)
            (silver-paren log)
            (srfi 1);(scheme list)
            )
@@ -13,10 +14,10 @@
            silver-paren-misc-object->string 
            silver-paren-misc-concatenate-path
            silver-paren-misc-tail-element-in-path 
-           silver-paren-misc-create-dir
+           silver-paren-misc/create-dir
            silver-paren-misc-config-ref
            silver-paren-misc-restart-begin
-           )
+           silver-paren-misc/exit-with-restart-simple)
 
    (begin
       (define silver-paren-misc-assoc-cadr-with-default 
@@ -63,13 +64,13 @@
              (else
                (loop (+ i 1) i)))))
 
-      (define (silver-paren-misc-exit-with-restart-simple symbol)
-         (when out-sourcing-flag
-           (silver-paren-log-out-command (string-append "restart" ">" symbol))
+      (define (silver-paren-misc/exit-with-restart-simple symbol outsourcing-flag)
+         (when outsourcing-flag
+           (silver-paren-log-out-command (string-append "restart" ">" (symbol->string symbol)))
            (exit)))
 
-      (define (silver-paren-misc-create-dir dirname out-sourcing-flag)
-         (if out-sourcing-flag
+      (define (silver-paren-misc/create-dir dirname outsourcing-flag)
+         (if outsourcing-flag
            (silver-paren-log-out-command (string-append "create-dir" ">" dirname))
            (silver-paren-log-message "This program doesn't support creating directories.")))
 

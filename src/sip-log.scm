@@ -18,5 +18,6 @@
          (display 
            (string-append
              "Silver-paren-out-command:"
-             message)))
+             message))
+        (newline))
 ))
