@@ -7,7 +7,7 @@
    (begin
       (define INTERNAL-DEFAULT-CONFIG
         '((edition-delimiter ":edition")
-          (silver-paren-directory-path "~/.silver-paren")
+          (silver-paren-directory-path "./")
           (silver-paren-directory-outsourcing #f)
           (silver-paren-restart-symbol _)))
 
@@ -15,42 +15,41 @@
         (list-copy INTERNAL-DEFAULT-CONFIG))
 
       (define (silver-paren-config-apply-command-line-option base-config arg-config option)
-        ;TODO! ERROR CHECK => (config-type opt) 
+        ;TODO! ERROR CHECK => (config-type opt)
          (let ((fold-fun
                  (lambda (opt res)
-                   (let* ((is-config-option 
+                   (let* ((is-config-option
                             (cond
                               ((assoc (car opt) arg-config))
                               (else #f)))
                           (config-name
                             (if is-config-option
-                              (cond 
-                                ((not is-config-option)
-                                 #f)
-                                ((assq 'silver-paren-config-name is-config-option)
+                              (cond
+                                ((not is-config-option) #f)
+                                ((assq
+                                   'silver-paren-config-name
+                                    is-config-option)
                                  => cadr)
                                 (else
                                   #f))))
                           (config-type
                             (if is-config-option
-                              (cond 
+                              (cond
                                 ((not is-config-option)
                                  #f)
-                                ((assq 'silver-paren-config-type is-config-option)
+                                ((assq
+                                   'silver-paren-config-type
+                                   is-config-option)
                                  => cadr)
-                                (else 
-                                  #f)))))
+                                (else #f)))))
                          (if config-name
-                            (cons 
-                              (list 
+                            (cons
+                              (list
                                 config-name
                                 (config-type opt))
                               res)
-                            res)
-                         ))))
+                            res)))))
          (fold
            fold-fun
            base-config
-           option)))
-
-      ))
+           option)))))

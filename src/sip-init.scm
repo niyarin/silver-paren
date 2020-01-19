@@ -11,10 +11,18 @@
    (export silver-paren-init/inited? silver-paren-init/init)
    (begin
       (define (silver-paren-init/inited? silver-paren-directory-path)
-        (file-exists? 
+        (file-exists?
           (silver-paren-misc/concatenate-path
             silver-paren-directory-path
             "config.list")))
+
+      (define (%create-imprementation-config filepath)
+        (call-with-output-file
+          filepath
+          (lambda (port)
+            (display
+              '((updated '()))
+              port))))
 
       (define (silver-paren-init/init config)
         (let* ((target-dir
@@ -35,7 +43,7 @@
                    _restart-symbol)))
           (cond
             ((not (silver-paren-init/inited? target-dir))
-             (silver-paren-misc-restart-begin 
+             (silver-paren-misc-restart-begin
                restart-symbol
                (silver-paren-init:create-sip-dir
                   (silver-paren-misc/create-dir target-dir outsourcing-flag)
@@ -56,6 +64,9 @@
                    'silver-paren-init:create-current-imprementation-config-file
                    outsourcing-flag))
                (silver-paren-init:create-current-imprementation-config-file
-                 (display "HELLO")(newline))))
-            (else
-              ))))))
+                 (%create-imprementation-config
+                     (silver-paren-misc/concatenate-path
+                       target-dir
+                       imprementation-name
+                       "config.list")))))
+            (else))))))

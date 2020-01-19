@@ -2,6 +2,7 @@
 (include "./sip-error.scm")
 (include "./sip-command.scm")
 (include "./sip-config.scm")
+(include "./sip-misc.scm")
 
 (define-library (silver-paren main)
    (import (scheme base)
@@ -10,30 +11,31 @@
            (silver-paren error)
            (silver-paren command)
            (silver-paren config)
+           (silver-paren misc)
            (niyarin optparse))
    (export silver-paren-main)
 
-   (begin 
+   (begin
      (define ARG-CONFIG
        `(("--help" "-h" (help "Display a help message and exit."))
          ("--version" "-v" (help "Display Silver-paren's version and exit."))
          ("--network-outsourcing" (nargs 0))
-         ("--directory-outsourcing" 
+         ("--directory-outsourcing"
           (nargs 0)
           (silver-paren-config-name silver-paren-directory-outsourcing)
           (silver-paren-config-type ,(lambda x #t)))
-         ("--edition-delimiter"  
-             (help "Set edition delimiter.(default :edition)") 
+         ("--edition-delimiter"
+             (help "Set edition delimiter.(default :edition)")
              (nargs 1)
-             (silver-paren-config-name edition-delimiter) 
+             (silver-paren-config-name edition-delimiter)
              (silver-paren-config-type ,cadr))
          ("--restart-symbol"
              (help "Hidden option")
              (nargs 1)
              (silver-paren-config-name silver-paren-restart-symbol)
              (silver-paren-config-type ,(lambda (x) (string->symbol (cadr x)))))
-         ("implementation" 
-          (help "Set using implementation.") 
+         ("implementation"
+          (help "Set using implementation.")
           (nargs 1)
           (silver-paren-config-name implementation)
           (silver-paren-config-type ,cadr))
@@ -61,16 +63,23 @@
          (exit #f)))
 
      (define (silver-paren-main . opt)
-       (let ((parsed-option 
+       (let ((parsed-option
                (if (null? opt)
                    (niyarin-optparse-optparse ARG-CONFIG)
                    (niyarin-optparse-optparse ARG-CONFIG (car opt)))))
-         (let ((command (cond ((assoc "command" parsed-option) => cadr)))
-               (config
-                 (silver-paren-config-apply-command-line-option
-                     (silver-paren-config/default-config)
-                     ARG-CONFIG
-                     parsed-option)))
+         (let* ((command (cond ((assoc "command" parsed-option) => cadr)))
+                (config-tmp
+                  (silver-paren-config-apply-command-line-option
+                      (silver-paren-config/default-config)
+                      ARG-CONFIG
+                      parsed-option))
+                (config
+                  (append
+                    (list `(silver-paren-directory-pat
+                             ,(silver-paren-misc/concatenate-path
+                                (get-environment-variable "HOME")
+                                ".silver-paren")))
+                    config-tmp)))
            (cond
             ((assoc "--help" parsed-option string=?) (%print-help))
             ((assoc "--version" parsed-option string=?) (%print-version))
@@ -80,14 +89,14 @@
             (else 
               (with-exception-handler
                 (lambda (ex)
-                  (silver-paren-error-mes 
+                  (silver-paren-error-mes
                     (error-object-message ex))
                   (exit #f))
                 (lambda ()
                   (silver-paren-command command parsed-option config))))
             ))))))
 
-(import 
+(import
   (silver-paren main))
 
 (silver-paren-main)
