@@ -12,7 +12,7 @@
 
    (export silver-paren-misc-assoc-cadr-with-default 
            silver-paren-misc-object->string 
-           silver-paren-misc-concatenate-path
+           silver-paren-misc/concatenate-path
            silver-paren-misc-tail-element-in-path 
            silver-paren-misc/create-dir
            silver-paren-misc-config-ref
@@ -47,7 +47,7 @@
            (string-append path1 path2)
            (string-append path1 "/" path2)))
 
-      (define (silver-paren-misc-concatenate-path path1 path2 . pathn)
+      (define (silver-paren-misc/concatenate-path path1 path2 . pathn)
         (fold 
           %concatenate-path2-rev 
           (%concatenate-path2-rev path2 path1)

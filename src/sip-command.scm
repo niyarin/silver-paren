@@ -51,7 +51,7 @@
         (silver-paren-display sip-features)))
      
     (define (%run-init-command command opt config)
-       (silver-paren-init config))
+       (silver-paren-init/init config))
 
     (define (silver-paren-command command opt config)
       (cond

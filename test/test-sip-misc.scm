@@ -28,17 +28,17 @@
                 => 'default-value)
          )
 
-      (define (%silver-paren-misc-concatenate-path-test)
-         (check (silver-paren-misc-concatenate-path
+      (define (%silver-paren-misc/concatenate-path-test)
+         (check (silver-paren-misc/concatenate-path
                   "aaa/bbb/ccc"
                   "ddd.eeee")
                 => "aaa/bbb/ccc/ddd.eeee")
 
-         (check (silver-paren-misc-concatenate-path
+         (check (silver-paren-misc\concatenate-path
                   "aaa/bbb/ccc/"
                   "ddd.eeee")
                 => "aaa/bbb/ccc/ddd.eeee")
-         (check (silver-paren-misc-concatenate-path
+         (check (silver-paren-misc/concatenate-path
                   "aaa/bbb/ccc/"
                   "ddd"
                   "eee"

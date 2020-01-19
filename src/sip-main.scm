@@ -27,6 +27,11 @@
              (nargs 1)
              (silver-paren-config-name edition-delimiter) 
              (silver-paren-config-type ,cadr))
+         ("--restart-symbol"
+             (help "Hidden option")
+             (nargs 1)
+             (silver-paren-config-name silver-paren-restart-symbol)
+             (silver-paren-config-type ,(lambda (x) (string->symbol (cadr x)))))
          ("implementation" 
           (help "Set using implementation.") 
           (nargs 1)
@@ -63,7 +68,7 @@
          (let ((command (cond ((assoc "command" parsed-option) => cadr)))
                (config
                  (silver-paren-config-apply-command-line-option
-                     (silver-paren-default-config)
+                     (silver-paren-config/default-config)
                      ARG-CONFIG
                      parsed-option)))
            (cond

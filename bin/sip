@@ -4,7 +4,7 @@ SILVER_PAREN_PATH=../src #TODO: fix lator
 
 TARGET_SCHEME=$1
 OPT=${@:1}
-
+SILVER_PAREN_RESTART_SYMBOL=_
 OUTSOURCING_OPT=--directory-outsourcing
 
 function do_command(){
@@ -16,13 +16,15 @@ function do_command(){
         target_dir=`eval "echo $opt"`
         mkdir $target_dir
     elif [ $cmd = "restart>" ]; then
-        echo "!"
+        restart_symbol=`eval "echo $opt"`
+        SILVER_PAREN_RESTART_SYMBOL="--restart-symbol "${restart_symbol}
+        read_loop
     fi
 }
 
 function read_loop(){
 
-    for output in `$TARGET_SCHEME $SILVER_PAREN_PATH/sip-main.scm $OPT $OUTSOURCING_OPT`
+    for output in `$TARGET_SCHEME $SILVER_PAREN_PATH/sip-main.scm $OPT $OUTSOURCING_OPT $SILVER_PAREN_RESTART_SYMBOL`
     do
         if  echo $output|grep "^Silver-paren-out-command:" >/dev/null  ; then
           expression=`echo $output|sed "s/^Silver-paren-out-command://g"`;
