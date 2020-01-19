@@ -10,18 +10,18 @@
 
      (define color-list
         (circular-list
-            "\x1b[31m"
-            "\x1b[32m"
-            "\x1b[33m"
-            "\x1b[34m"
-            "\x1b[35m"
-            "\x1b[36m"))
+          (string-append (string #\escape) "[31m")
+          (string-append (string #\escape) "[32m")
+          (string-append (string #\escape) "[33m")
+          (string-append (string #\escape) "[34m")
+          (string-append (string #\escape) "[35m")
+          (string-append (string #\escape) "[36m")))
 
      (define rainbow-write-current-color
        (make-parameter color-list))
 
      (define default-color
-        "\x1b[39m")
+        (string-append (string #\escape) "[39m"))
 
      (define (write-display-rainbow obj write/display . opt-port)
        (let ((port (if (null? opt-port) (current-input-port) (car opt-port))))
