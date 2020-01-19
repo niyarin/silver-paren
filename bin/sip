@@ -18,7 +18,6 @@ function do_command(){
     elif [ $cmd = "restart>" ]; then
         restart_symbol=`eval "echo $opt"`
         SILVER_PAREN_RESTART_SYMBOL="--restart-symbol "${restart_symbol}
-        echo ${SILVER_PAREN_RESTART_SYMBOL}
         read_loop
     fi
 }
